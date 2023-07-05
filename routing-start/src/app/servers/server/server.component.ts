@@ -26,6 +26,11 @@ export class ServerComponent implements OnInit {
   }
 
   onEdit(){
-    this.router.navigate(['edit'], {relativeTo: this.route});
+    this.router.navigate(['edit'], {relativeTo: this.route, queryParamsHandling:'preserve'});
+    //queryParamsHandling: merge => merges our old query params with any new we might add here
+    //queryParamsHandling: preserve => overRides a default behaviour, which is simply drop them when click on another button to navigate
+    //and makes sure that the old ones are kept
+    //if we were to add new ones here the old ones would actually override the new ones
+    //so it would be better to use merge in this case
   }
 }
