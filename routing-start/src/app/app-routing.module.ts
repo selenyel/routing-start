@@ -10,6 +10,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { AuthGuard } from "./auth-guard.service";
 import { CanDeactivateGuard } from "./servers/edit-server/can-activate-guard.service";
 import { ErrorPageComponent } from "./error-page/error-page.component";
+import { ServerResolver } from "./servers/server/server-resolver.service";
 
 const appRoutes : Routes = [
     {
@@ -27,7 +28,8 @@ const appRoutes : Routes = [
         path:'servers', 
         // canActivate: [AuthGuard],
         canActivateChild: [AuthGuard],
-        component: ServersComponent, 
+        component: ServersComponent,
+        resolve:{server: ServerResolver}, 
         children: [
             {path:':id/edit', component: EditServerComponent, canDeactivate:[CanDeactivateGuard]},
             {path:':id', component: ServerComponent}
@@ -52,6 +54,13 @@ const appRoutes : Routes = [
 
 @NgModule({
     imports: [
+//        RouterModule.forRoot(appRoutes, {useHash:true})
+//  converts the routes like this :
+//  http://localhost:4200/#/servers
+//  we do this because when we want to go /servers but
+//  we can't due to real domain's web server trying to find this /server route.
+//  when it can't find it, it will return 404. So we add the useHash to add # after the link root
+//  this way we can say that only care and change the links before the #
         RouterModule.forRoot(appRoutes)
     ],
     exports: [

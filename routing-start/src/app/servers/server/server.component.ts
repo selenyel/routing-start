@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ServersService } from '../servers.service';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Data, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-server',
@@ -16,13 +16,28 @@ export class ServerComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit() {
+    this.route.data
+      .subscribe(
+        (data : Data) => {
+          this.server = data['server'];
+        }
+      );
 
-    const id = +this.route.snapshot.params['id'] //stringfy the id with +
+    // this.route.data = app-routing.module.ts'deki         
+    // resolve:{server: ServerResolver} ibaresindeki server'i temsil etmektedir
+    // buradaki server ise ServerResolver'in return ettigi id spesific server'a tekabul eder
 
-    this.server = this.serversService.getServer(id);
-    this.route.params.subscribe((params:Params)=>{
-      this.server = this.serversService.getServer(+params['id']); //stringfy the id with + 
-    })
+    // subscribe olma sebebimiz ise side menu var dolayisiyla server degisebilir
+
+    // this.server = data['server'] ifadesindeki 2. server ise app-routing.module.ts'in icindeki
+    // degisken adi olan server ile ayni seyi temsil eder.
+
+    // const id = +this.route.snapshot.params['id'] //string to number the id with +
+
+    // this.server = this.serversService.getServer(id);
+    // this.route.params.subscribe((params:Params)=>{
+    //   this.server = this.serversService.getServer(+params['id']); //string to number the id with + 
+    // })
   }
 
   onEdit(){
